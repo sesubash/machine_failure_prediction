@@ -14,6 +14,7 @@ from huggingface_hub import login, HfApi
 api = HfApi(token=os.getenv("HF_TOKEN"))
 DATASET_PATH = "hf://datasets/rapidflow/machine-failure-prediction/machine-failure-prediction.csv"
 df = pd.read_csv(DATASET_PATH)
+df.columns = df.columns.str.replace(" ", "_")
 print("Dataset loaded successfully.")
 
 # Drop the unique identifier

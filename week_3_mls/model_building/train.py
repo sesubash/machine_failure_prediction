@@ -29,8 +29,12 @@ ytest_path = "hf://datasets/rapidflow/machine-failure-prediction/ytest.csv"
 
 Xtrain = pd.read_csv(Xtrain_path)
 Xtest = pd.read_csv(Xtest_path)
-ytrain = pd.read_csv(ytrain_path)
-ytest = pd.read_csv(ytest_path)
+ytrain = pd.read_csv(ytrain_path).squeeze()
+ytest = pd.read_csv(ytest_path).squeeze()
+
+# Normalize column names (HF CSV may use spaces)
+Xtrain.columns = Xtrain.columns.str.replace(" ", "_")
+Xtest.columns = Xtest.columns.str.replace(" ", "_")
 
 
 # One-hot encode 'Type' and scale numeric features
@@ -44,9 +48,8 @@ numeric_features = [
 categorical_features = ['Type']
 
 
-# Set the clas weight to handle class imbalance
+# Set the class weight to handle class imbalance
 class_weight = ytrain.value_counts()[0] / ytrain.value_counts()[1]
-class_weight
 
 # Define the preprocessing steps
 preprocessor = make_column_transformer(
